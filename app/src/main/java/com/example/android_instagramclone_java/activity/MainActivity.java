@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -21,9 +22,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * and pages can be controlled by BottomNavigationView
  * **/
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements UploadFragment.UploadListener,HomeFragment.HomeListener{
     private String TAG = MainActivity.class.toString();
-    int index = 0;
+    int index = 8;
     HomeFragment homeFragment = new HomeFragment();
     UploadFragment uploadFragment = new UploadFragment();
     ViewPager viewPager;
@@ -35,10 +36,28 @@ public class MainActivity extends BaseActivity {
         initViews();
     }
 
+    @Override
+    public void scrollToHome() {
+        index = 0;
+        scrollByIndex(index);
+    }
+
+    private void scrollByIndex(int index) {
+        viewPager.setCurrentItem(index);
+        bottomNavigationView.getMenu().getItem(index).setChecked(true);
+    }
+
+    @Override
+    public void scrollToUpload() {
+        index = 2;
+        scrollByIndex(index);
+    }
+
     private void initViews() {
         viewPager = findViewById(R.id.viewPager);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
